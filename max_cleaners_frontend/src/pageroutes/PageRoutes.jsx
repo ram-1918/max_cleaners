@@ -1,7 +1,7 @@
 import {BrowserRouter, Navigate, Route, Routes} from 'react-router-dom'
 import Home from '../pages/Home';
 import PrivateRoutes from './PrivateRoutes';
-import BaseAuthForm from '../components/base/BaseAuthForm';
+import BaseAuthForm from '../pages/auth/BaseAuthForm';
 import PublicRoutes from './PublicRoutes';
 
 

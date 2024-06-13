@@ -8,7 +8,7 @@ export default function Home() {
     const products = useSelector(getProducts);
     const [newProduct, setNewProduct] = useState('');
 
-    if(!products){
+    if(!products) {
         return <span>Loading...</span>;
     }
 
