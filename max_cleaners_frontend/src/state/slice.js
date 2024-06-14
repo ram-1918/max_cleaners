@@ -8,8 +8,9 @@ export const slice = createSlice({
     reducers: reducers
 })
 
-export const { setProducts } = slice.actions;
+export const { setIsLoggedIn, setProducts } = slice.actions;
 
+export const getIsLoggedIn = state => state.slice.isLoggedIn;
 export const getProducts = state => state.slice.products;
 
 export default slice.reducer;

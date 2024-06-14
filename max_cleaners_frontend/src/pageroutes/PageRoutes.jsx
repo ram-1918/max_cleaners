@@ -3,6 +3,8 @@ import Home from '../pages/Home';
 import PrivateRoutes from './PrivateRoutes';
 import BaseAuthForm from '../pages/auth/BaseAuthForm';
 import PublicRoutes from './PublicRoutes';
+import NewOrder from '../pages/orders/NewOrder';
+import BaseOrderPage from '../pages/orders/BaseOrderPage';
 
 
 export default function PageRoutes() {
@@ -17,7 +19,10 @@ export default function PageRoutes() {
                 {/* Private Routes */}
                 <Route path='/' element={<PrivateRoutes />}>
                     <Route path='' element={<Navigate to='/home' />} />
-                    <Route index path='home' element={<Home />} />
+                    <Route index path='home/' element={<Home />}></Route>
+                    <Route path='order/' element={<BaseOrderPage />}>
+                        <Route path='new' element={<NewOrder />} />
+                    </Route>
                 </Route>
             </Routes>
         </BrowserRouter>

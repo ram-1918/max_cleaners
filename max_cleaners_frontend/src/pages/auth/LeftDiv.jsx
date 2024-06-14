@@ -14,6 +14,10 @@ import {
   input_field_mapper_register,
 } from "./data_template";
 import { useState } from "react";
+import { setIsLoggedIn } from "../../state/slice";
+import { useDispatch } from 'react-redux';
+import { validateData } from "../../utils";
+
 
 export default function LeftDiv({ isLogin, isRegister }) {
   return (
@@ -43,14 +47,20 @@ const DividingTextSpan = () => {
 
 const BodyDiv = ({ isLogin, isRegister }) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [data, setData] = useState({});
 
   const handleClick = () => {
     if (isLogin) {
       console.log("Clicked login Button and API call made", data);
     } else {
-      console.log("Clicked register Button and API call made");
+      // Register
+      if (validateData(data)) {
+        console.log("Clicked register Button and API call made");
+      }
     }
+    dispatch(setIsLoggedIn(true));
+    localStorage.setItem('lg', true);    // Set login state in localstorage
     navigate('/');
   };
 

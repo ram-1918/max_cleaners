@@ -3,10 +3,20 @@ import { Link } from "react-router-dom";
 export const BaseCompanyLogo = () => {
     return (
         <span className="text-2xl font-light leading-7 tracking-wide">
-            <span className="text-green-700 font-bold">Max</span>
+            <span className="text-sky-700 font-bold">Max</span>
             Cleaners</span>
     )
 };
+
+export const BaseHamBurger = ({...props}) => {
+    return (
+        <div {...props} className="flex flex-col space-y-1">
+            <span className="w-4 border border-black"></span>
+            <span className="w-4 border border-black"></span>
+            <span className="w-4 border border-black"></span>
+        </div>
+    )
+}
 
 export const BaseButton = ({text, ...rest}) => {
     return (

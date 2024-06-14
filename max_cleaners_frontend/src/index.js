@@ -5,6 +5,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import configureStore from './state/store';
 import { Provider } from 'react-redux';
+import 'react-calendar/dist/Calendar.css';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

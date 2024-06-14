@@ -3,16 +3,11 @@ module.exports = {
   content: ['./src/**/*.{js,jsx}'],
   theme: {
     screens: {
-      'small': '340px',
-      'mobile': '379px',
-      'tablet': '640px',
-      // => @media (min-width: 640px) { ... }
-
-      'laptop': '1024px',
-      // => @media (min-width: 1024px) { ... }
-
+      'small': {'min': '350px'},
+      'mobile': {'min': '350px', 'max': '640px'},
+      'tablet': {'min': '640px', 'max': '1024px'},
+      'laptop': {'min': '1024px', 'max': '1280px'},
       'desktop': '1280px',
-      // => @media (min-width: 1280px) { ... }
     },
     extend: {
     },

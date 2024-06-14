@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useSelector } from "react-redux";
 import { Navigate, Outlet } from "react-router-dom";
+import { getIsLoggedIn } from "../state/slice";
 
 export default function PublicRoutes() {
-    const [isLoggedin, ] = useState(false);
-    console.log('Public', isLoggedin);
-    return !isLoggedin ? <Outlet /> : <Navigate to='/home' />
+    const isLoggedIn = useSelector(getIsLoggedIn);
+    console.log('Public', isLoggedIn);
+    return !isLoggedIn ? <Outlet /> : <Navigate to='/home' />
 }
