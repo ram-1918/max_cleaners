@@ -3,18 +3,19 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import configureStore from './state/store';
+// import configureStore from './state/store';
 import { Provider } from 'react-redux';
 import 'react-calendar/dist/Calendar.css';
+import 'react-datepicker/dist/react-datepicker.css';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <Provider store={configureStore}>
+  // <Provider store={configureStore}>
     <React.StrictMode>
       <App />
     </React.StrictMode>
-  </Provider>
+  // </Provider>
 );
 
 // If you want to start measuring performance in your app, pass a function

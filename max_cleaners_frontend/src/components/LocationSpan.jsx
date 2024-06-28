@@ -1,13 +1,15 @@
+import { textcolor_1, textcolor_2, textcolor_3 } from "../assets/data";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faLocationDot, faLocationPin } from '@fortawesome/free-solid-svg-icons';
-import { locationIcon } from './base/BaseIcons';
+import { faLocation, faLocationDot } from '@fortawesome/free-solid-svg-icons';
+import { locationIcon } from "../base/icons";
+import { navbar_option_styles } from "../base/baseStyles";
 
-export const TopnavSec2Styles = 'px-2 py-1 hover:text-sky-700 cursor-pointer rounded-full font-medium';
-
-export default function LocationSpan() {
-    return (
-        <span className={`${TopnavSec2Styles}`}>
-            {locationIcon} Edison, NJ
-        </span>
-    )
+export default function LocationSpan({ locationText }) {
+  return (
+    <span
+      className={`${navbar_option_styles}`}
+    >
+        {locationIcon} {locationText}
+    </span>
+  );
 }
