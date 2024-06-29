@@ -1,6 +1,4 @@
-import { useState } from "react";
-import { textcolor_1, textcolor_2, textcolor_3 } from "../assets/data";
-import { navbar_option_styles } from "../base/baseStyles";
+import { textcolor_1, textcolor_2 } from "../assets/data";
 import {
   caretDownIcon,
   caretupIcon,

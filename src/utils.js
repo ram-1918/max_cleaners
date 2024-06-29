@@ -11,7 +11,3 @@ export const validateData = (data) => {
     }
     return isEmailValid && isFullnameValid
 }
-
-export const roundToTwo = (num) => {
-    return +(Math.round(num + "e+2")  + "e-2");
-}

@@ -3,8 +3,10 @@ import ImmediatePickup from "../components/ImmediatePickup";
 import LocationSpan from "../components/LocationSpan";
 import Logo from "../components/Logo";
 import WelcomeUsername from "../components/WelcomeUsername";
+import { useNavigate } from "react-router";
 
 export default function Navbar() {
+  const navigate = useNavigate();
   const [showDropdown, setShowDropdown] = useState(false);
   return (
     <header className="border-b py-3 px-10 flex justify-between items-center">
@@ -15,7 +17,7 @@ export default function Navbar() {
         ></div>
       )}
       <div>
-        <Logo text="7.99 Cleaners" />
+        <Logo onClick={() => {navigate('/')}} text="7.99 Cleaners" />
       </div>
       <div className="w-[45%] flex justify-between items-center space-x-10">
         <div className="space-x-7">
