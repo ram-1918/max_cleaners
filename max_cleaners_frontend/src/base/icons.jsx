@@ -1,4 +1,4 @@
-import { faArrowLeft, faArrowRight, faBox, faBoxes, faBoxesAlt, faCaretDown, faCaretUp, faCheck, faCheckCircle, faCogs, faCopyright, faEdit, faLocationDot, faMinus, faMultiply, faPhone, faPlus, faShieldAlt, faShirt, faSignOut, faTShirt, faUser, faUserClock, faUserPlus } from "@fortawesome/free-solid-svg-icons";
+import { faArrowLeft, faArrowRight, faBox, faBoxes, faBoxesAlt, faCaretDown, faCaretUp, faCheck, faCheckCircle, faCogs, faCopyright, faEdit, faLocationDot, faMinus, faMultiply, faPhone, faPlus, faShieldAlt, faShirt, faSignOut, faTShirt, faTrash, faUser, faUserClock, faUserPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const baseStyle = 'text-md text-slate-600'
@@ -22,5 +22,6 @@ export const plusIcon = <FontAwesomeIcon className={`${baseStyle}`} icon={faPlus
 export const minusIcon = <FontAwesomeIcon className={`${baseStyle}`} icon={faMinus} />;
 export const closeIcon = <FontAwesomeIcon className={`${baseStyle}`} icon={faMultiply} />;
 export const editIcon = <FontAwesomeIcon className={`${baseStyle}`} icon={faEdit} />;
+export const trashIcon = <FontAwesomeIcon className={`${baseStyle} text-red-700 text-sm`} icon={faTrash} />;
 export const hangerIcon = <FontAwesomeIcon className={`${baseStyle}`} icon={faShirt} />;
 export const tickIcon = <FontAwesomeIcon className={`${baseStyle} text-green-600`} icon={faCheckCircle} />;

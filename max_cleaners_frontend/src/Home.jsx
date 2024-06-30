@@ -7,7 +7,7 @@ import Footer from "./sections/Footer";
 
 export default function Home() {
     return (
-        <div className="space-y-10">
+        <div className="h-screen space-y-10">
             <Navbar />
             <Outlet />
             <Footer />

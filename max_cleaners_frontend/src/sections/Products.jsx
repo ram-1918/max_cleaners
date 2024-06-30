@@ -8,6 +8,8 @@ import Button from "../components/Button";
 import { Outlet, useNavigate } from "react-router";
 import BackButton from "../components/BackButton";
 import { roundToTwo } from "../assets/utils";
+import EditButton from "../components/EditButton";
+import RemoveButton from "../components/RemoveButton";
 
 export default function Products() {
     return (
@@ -62,13 +64,16 @@ export function SingleOrderItem({ title, count, amount, total_addons=0}) {
     return (
         <div className="w-full">
             <div className="w-full flex justify-between items-center">
-                <span className="text-xl font-medium">{title}</span>
+                <span className="text-xl font-medium capitalize">{title}</span>
                 <span>{count} x <PriceSpan amount={amount} /></span>
                 <PriceSpan amount={roundToTwo(count * amount)} />
             </div>
             <div className="w-full flex justify-between items-center">
                 <span>{total_addons} Add-ons</span>
-                <span>{editIcon} Manage</span>
+                <div className="flex justify-center items-center space-x-4">
+                    <EditButton />
+                    <RemoveButton />
+                </div>
             </div>
         </div>
     )

@@ -20,7 +20,7 @@ export default function OrderOverviewPage() {
 function LeftComponent() {
     return (
         <div className="w-[60%] h-96 p-2 overflow-y-scroll">
-            <span className="py-2 text-lg font-medium">Item Count: {12}</span>
+            <span className="py-2 text-lg font-medium text-sky-500">Item Count: {12}</span>
             <div className="w-full flex flex-col justify-start items-start space-y-1 divide-y divide-gray-200 px-4">
                 <SingleOrderItem 
                     title="Shirt"

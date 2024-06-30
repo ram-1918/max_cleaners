@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router";
 import { textcolor_1, textcolor_2 } from "../assets/data";
 import {
   caretDownIcon,
@@ -42,11 +43,12 @@ function Username({ username, showDropdown }) {
 }
 
 function DropdownOptions() {
+  const navigate = useNavigate();
   const list_style = "text-md px-2 py-2 cursor-pointer hover:bg-gray-200";
   return (
-    <ul className=" w-full absolute top-1 left-0 bg-white shadow rounded-bl-lg rounded-br-lg overflow-hidden">
+    <ul className="z-10 w-full absolute top-1 left-0 bg-white shadow-lg rounded-bl-lg rounded-br-lg overflow-hidden">
       {options.map((item) => (
-        <li key={item.id} className={list_style}>
+        <li onClick={() => {navigate(item.path)}} key={item.id} className={list_style}>
           <span className="pr-2">{item.icon}</span> {item.text}
         </li>
       ))}
@@ -63,7 +65,7 @@ const options = [
   {
     id: 1,
     text: "Profile",
-    path: "/",
+    path: "/profile",
     icon: userIcon,
   },
   {
