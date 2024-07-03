@@ -1,8 +1,9 @@
-export default function Input({ placeholder, value, label, ...props }) {
+export default function Input({ error, type, value, label, disable=false, ...props }) {
     return (
-        <fieldset className="border rounded-xl px-2 p-1">
-            <legend className="ml-4">{label}</legend>
-            <input {...props} className="outline-none w-64 border-none" value={value} placeholder={placeholder} />
+        <fieldset className={`${disable && 'bg-gray-100', error[label] && 'border-red-500'} border rounded-xl px-2 p-1`}>
+            {console.log(error)}
+            <legend  className={`${disable && 'bg-white', error[label] && 'text-red-500'} ml-4 px-2 capitalize`}>{label}</legend>
+            <input {...props} type={type} className={`${disable && 'disabled:bg-transparent'} outline-none w-64 border-none`} value={value} disabled={disable} />
         </fieldset>
     )
 }

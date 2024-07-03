@@ -6,6 +6,13 @@ import { useState } from "react";
 import { roundToTwo } from "../assets/utils";
 import Button from "../components/Button";
 
+export const option_style = 'w-32 text-center px-2 py-1 text-sm font-medium rounded-full border cursor-pointer hover:bg-gray-100 uppercase';
+export const OptionsSpan = ({options}) => {
+    return (
+        options.map((option, idx) => <span className={option_style} key={idx}>{option}</span>)
+    )
+}
+
 const styled_hr_line = (
     <div className="w-full flex justify-between items-center space-x-2">
         <div className="w-[45%] h-0 border border-sky-100"></div>
@@ -68,28 +75,22 @@ function Counter({setCount, count}) {
 const addons = [
     {
         id: 1,
-        type: 'bleach level',
-        options: ['high', 'medium', 'low']
-    },
-    {
-        id: 2,
-        type: 'starch level',
-        options: ['high', 'medium', 'low']
-    },
-    {
-        id: 3,
         type: 'cloth type',
         options: ['wool', 'silk', 'cotton', 'lenin', 'knit', 'other']
     },
     {
-        id: 4,
+        id: 2,
         type:'alterations',
         options: ['hem', 'cuff', 'shrtn', 'sleeve', 'lenghten', 'other']
+    },
+    {
+        id: 3,
+        type: 'Wash Type',
+        options: ['Regualar', 'Dry Cleaning']
     }
 ]
 
 function AddonsDetails() {
-    const option_style = 'w-24 text-center px-2 py-1 text-sm font-medium rounded-full border cursor-pointer hover:bg-gray-100 uppercase';
     return (
         <div className="flex flex-col justify-start items-start space-y-4">
             {
@@ -97,13 +98,21 @@ function AddonsDetails() {
                     item => (
                         <div className="flex flex-col justify-start items-start space-y-2" key={item.id}>
                             <span className="text-md font-semibold after:content-['?'] capitalize">{item.type}</span>
-                            <div className="grid grid-flow-row grid-cols-5 gap-4">
-                                {item.options.map((option, idx) => <span className={option_style} key={idx}>{option}</span>)}
+                            <div className="grid grid-flow-row grid-cols-4 gap-4">
+                                <OptionsSpan options={item.options} />
                             </div>
                         </div>
                     ))
             }
-
+            {"dry cleaning" === "dry cleaning" &&
+                (
+                    <div className="space-x-2">
+                        <span className="text-md font-semibold after:content-['?'] capitalize">Stains</span>
+                        <span className={option_style}>Yes</span>
+                        <span className={option_style}>No</span>
+                    </div>
+                )
+            }
         </div>
     )
 }

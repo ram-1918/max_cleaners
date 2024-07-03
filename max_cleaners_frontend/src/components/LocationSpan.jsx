@@ -6,7 +6,7 @@ export default function LocationSpan({ locationText }) {
     <span
       className={`${navbar_option_styles}`}
     >
-        {locationIcon} {locationText}
+        {locationIcon} {locationText['city']}, {locationText['state']}
     </span>
   );
 }

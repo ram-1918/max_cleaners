@@ -5,3 +5,5 @@ export default function App() {
 }
 
 // https://github.com/airbnb/javascript/tree/master/react
+
+// "hand wash/regular/dry cleaning",

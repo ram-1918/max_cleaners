@@ -4,10 +4,14 @@ import LocationSpan from "../components/LocationSpan";
 import Logo from "../components/Logo";
 import WelcomeUsername from "../components/WelcomeUsername";
 import { useNavigate } from "react-router";
+import { notificationIcon } from "../base/icons";
+import { useRecoilValue } from "recoil";
+import { currentUserAtom } from "../recoil_state/atoms";
 
 export default function Navbar() {
   const navigate = useNavigate();
   const [showDropdown, setShowDropdown] = useState(false);
+  const currentUser = useRecoilValue(currentUserAtom);
   return (
     <header className="border-b py-3 px-10 flex justify-between items-center">
       {showDropdown && (
@@ -19,13 +23,14 @@ export default function Navbar() {
       <div>
         <Logo onClick={() => {navigate('/')}} text="7.99 Cleaners" />
       </div>
-      <div className="w-[45%] flex justify-between items-center space-x-10">
-        <div className="space-x-7">
-          <LocationSpan locationText="Edison, NJ" />
+      <div className="w-[50%] flex justify-end items-center space-x-10">
+        <div className="space-x-5">
+          <LocationSpan locationText={currentUser.location} />
           <ImmediatePickup />
         </div>
+        {notificationIcon}
         <WelcomeUsername
-          username="Ram Chandra"
+          username={currentUser.fullname}
           showDropdown={showDropdown}
           setShowDropdown={setShowDropdown}
         />

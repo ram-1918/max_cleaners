@@ -1,0 +1,35 @@
+{
+    "orders": [
+        {
+            "date": "29th June, 2024",
+            "status": "placed",
+            "count": 12,
+            "products": [
+                {
+                    "id": 1,
+                    "name": "shirt",
+                    "price": "3.99",
+                    "count": 3,
+                    "bleach": "medium",
+                    "starch": "medium",
+                    "alteration": "hem",
+                    "cloth_type": "wool",
+                    "instructions": "Please clear the stains on one of the shirts"
+                },
+                {
+                    "id": 2,
+                    "name": "pants",
+                    "price": "4.99",
+                    "count": 2,
+                    "bleach": "low",
+                    "starch": "medium",
+                    "alteration": "none",
+                    "cloth_type": "cotton",
+                    "instructions": "Please use hand wash"
+                }
+            ]
+
+        }
+
+    ]
+}

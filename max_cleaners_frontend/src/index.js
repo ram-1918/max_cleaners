@@ -7,15 +7,16 @@ import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
 import 'react-calendar/dist/Calendar.css';
 import 'react-datepicker/dist/react-datepicker.css';
+import { RecoilRoot } from 'recoil';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  // <Provider store={configureStore}>
+  <RecoilRoot>
     <React.StrictMode>
       <App />
     </React.StrictMode>
-  // </Provider>
+  </RecoilRoot>
 );
 
 // If you want to start measuring performance in your app, pass a function

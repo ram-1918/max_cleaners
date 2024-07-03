@@ -1,0 +1,38 @@
+{
+    "products": [
+        {
+            "id": 1,
+            "name": "shirt",
+            "price": "3.99",
+            "count": 1,
+            "alteration": "none",
+            "cloth_type": "regular",
+            "wash_type": "regular",
+            "stains": "no",
+            "instuctions": "",
+            "image": "../assets/images/products/pants.png"
+        },
+        {
+            "id": 2,
+            "name": "pants",
+            "price": "4.99",
+            "count": 1,
+            "alteration": "none",
+            "cloth_type": "regular",
+            "wash_type": "regular",
+            "instuctions": "",
+            "image": "../assets/images/products/pants.png"
+        },
+        {
+            "id": 3,
+            "name": "jeans",
+            "price": "4.99",
+            "count": 1,
+            "alteration": "none",
+            "cloth_type": "regular",
+            "wash_type": "regular",
+            "instuctions": "",
+            "image": "../assets/images/products/pants.png"
+        }
+    ]
+}

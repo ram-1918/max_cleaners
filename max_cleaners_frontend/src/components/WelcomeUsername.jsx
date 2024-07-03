@@ -31,12 +31,12 @@ function Username({ username, showDropdown }) {
   return (
     <span
       style={{ color: textcolor_2 }}
-      className={`px-2 py-2 bg-gray-100 border cursor-pointer ${
+      className={`w-56 flex justify-between items-center px-2 py-2 bg-gray-100 border cursor-pointer ${
         showDropdown ? "rounded-tl-lg rounded-tr-lg" : "rounded-lg"
       }`}
     >
-      Welcome,{" "}
-      <span style={{ color: textcolor_1, fontWeight: "bold" }}>{username}</span>
+      Welcome, {" "}
+      <p style={{ color: textcolor_1, fontWeight: "bold" }} className="px-1 w-44 overflow-hidden text-ellipsis whitespace-nowrap">{username}</p>
       {" "} {showDropdown ? caretupIcon: caretDownIcon}
     </span>
   );

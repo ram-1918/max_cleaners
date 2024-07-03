@@ -11,6 +11,8 @@ import { roundToTwo } from "../assets/utils";
 import EditButton from "../components/EditButton";
 import RemoveButton from "../components/RemoveButton";
 
+import productsData from '../assets/data/products.json';
+
 export default function Products() {
     return (
         <div className="relative w-full h-full px-10 flex justify-between items-center">
@@ -26,10 +28,12 @@ export default function Products() {
 }
 
 function ProductsGrid() {
+    console.log(productsData);
     return (
         <div className="w-[70%] h-fit p-2 grid grid-flow-row grid-cols-5 gap-4">
-            <ProductCard image={two_piece_suit} title="two piece suit" cost="10.99" />
-            <ProductCard image={pants} title="Pants" cost="4.99" />
+            {productsData.products.map(product => <ProductCard key={product.id} image={product.image} title={product.name} cost={product.price} />)}
+            {/* <ProductCard image={two_piece_suit} title="two piece suit" cost="10.99" />
+            <ProductCard image={pants} title="Pants" cost="4.99" /> */}
         </div>
     )
 }

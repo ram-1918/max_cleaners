@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { plusIcon, rightArrowIcon } from "../base/icons";
 import PriceSpan from "./PriceSpan";
-
+import pantsImage from '../assets/images/products/pants.png';
 
 export default function ProductCard({
   image,

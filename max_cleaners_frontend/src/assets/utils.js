@@ -15,3 +15,7 @@ export const validateData = (data) => {
 export const roundToTwo = (num) => {
     return +(Math.round(num + "e+2")  + "e-2");
 }
+
+export const basedOnPrimary = (a, b) => {
+    return a['primary'] < b['primary']
+}
