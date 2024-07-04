@@ -1,27 +1,25 @@
 import { Link } from "react-router-dom";
 import { plusIcon, rightArrowIcon } from "../base/icons";
 import PriceSpan from "./PriceSpan";
-import pantsImage from '../assets/images/products/pants.png';
+
+const getImageUrl = (imgPath) => require(`../assets/images/products/${imgPath}`);
 
 export default function ProductCard({
-  image,
-  title,
-  cost,
+  product,
   bgcolor,
-  ...rest
 }) {
   return (
     <div
       style={{ backgroundColor: bgcolor }}
       className="group/item h-52 shadow-md rounded-xl border flex flex-col justify-start items-start space-y-2 p-0 overflow-hidden"
     >
-        <img className="w-full h-32" src={image} alt="apparel type" />
+        <img className="w-full h-32" src={getImageUrl(product.image)} alt="apparel type" />
         <div className="w-full flex justify-between items-center p-2 bg-red-0">
             <div className="flex flex-col justify-start items-start">
-                <span className="text-md font-medium capitalize text-ellipsis">{title}</span>
-                <PriceSpan amount={cost} />
+                <span className="text-md font-medium capitalize text-ellipsis">{product.name}</span>
+                <PriceSpan amount={product.price} />
             </div>
-            <Link to='./add-ons' className="text-xl">
+            <Link to={`./add-ons/${product.id}`}  className="text-xl">
                 {plusIcon}
             </Link>
         </div>

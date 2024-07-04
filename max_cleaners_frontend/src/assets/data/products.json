@@ -9,8 +9,8 @@
             "cloth_type": "regular",
             "wash_type": "regular",
             "stains": "no",
-            "instuctions": "",
-            "image": "../assets/images/products/pants.png"
+            "instructions": "",
+            "image": "pants.png"
         },
         {
             "id": 2,
@@ -20,8 +20,8 @@
             "alteration": "none",
             "cloth_type": "regular",
             "wash_type": "regular",
-            "instuctions": "",
-            "image": "../assets/images/products/pants.png"
+            "instructions": "",
+            "image": "two_piece_suit.png"
         },
         {
             "id": 3,
@@ -31,8 +31,8 @@
             "alteration": "none",
             "cloth_type": "regular",
             "wash_type": "regular",
-            "instuctions": "",
-            "image": "../assets/images/products/pants.png"
+            "instructions": "",
+            "image": "pants.png"
         }
     ]
 }

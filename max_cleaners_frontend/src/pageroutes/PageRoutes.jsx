@@ -29,7 +29,7 @@ export default function PageRoutes() {
                         <Route index element={<Navigate to='./pick-a-schedule' />}></Route>
                         <Route path='pick-a-schedule' element={<SchedulePicker />} />
                         <Route path='select-items/' element={<Products />} >
-                            <Route path='add-ons' element={<AddonsPage />} />
+                            <Route path='add-ons/:productid' element={<AddonsPage />} />
                         </Route>
                         <Route path='overview' element={<OrderOverviewPage />} />
                     </Route>
