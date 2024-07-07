@@ -13,7 +13,7 @@ export default function Navbar() {
   const [showDropdown, setShowDropdown] = useState(false);
   const currentUser = useRecoilValue(currentUserAtom);
   return (
-    <header className="border-b py-3 px-10 flex justify-between items-center">
+    <header className="border-b py-2 px-10 flex justify-between items-center text-md font-medium text-gray-500">
       {showDropdown && (
         <div
           onClick={() => setShowDropdown(false)}

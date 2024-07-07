@@ -33,6 +33,61 @@
             "wash_type": "regular",
             "instructions": "",
             "image": "pants.png"
+        },
+        {
+            "id": 4,
+            "name": "jacket",
+            "price": "7.99",
+            "count": 1,
+            "alteration": "none",
+            "cloth_type": "regular",
+            "wash_type": "regular",
+            "instructions": "",
+            "image": "pants.png"
+        },
+        {
+            "id": 5,
+            "name": "skirt",
+            "price": "5.49",
+            "count": 1,
+            "alteration": "none",
+            "cloth_type": "regular",
+            "wash_type": "regular",
+            "instructions": "",
+            "image": "pants.png"
+        },
+        {
+            "id": 6,
+            "name": "polo shirt",
+            "price": "6.49",
+            "count": 1,
+            "alteration": "none",
+            "cloth_type": "regular",
+            "wash_type": "regular",
+            "instructions": "",
+            "image": "pants.png"
+        },
+        {
+            "id": 7,
+            "name": "jump suit",
+            "price": "8.39",
+            "count": 1,
+            "alteration": "none",
+            "cloth_type": "lenin",
+            "wash_type": "regular",
+            "instructions": "",
+            "image": "pants.png"
+        },
+        {
+            "id": 8,
+            "name": "sweater",
+            "price": "7.99",
+            "count": 1,
+            "alteration": "none",
+            "cloth_type": "wool",
+            "wash_type": "regular",
+            "instructions": "",
+            "image": "pants.png"
         }
     ]
 }

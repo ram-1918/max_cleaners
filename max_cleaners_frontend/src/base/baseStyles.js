@@ -1,1 +1,1 @@
-export const navbar_option_styles = 'text-lg capitalize cursor-pointer hover:opacity-70'
+export const navbar_option_styles = 'capitalize cursor-pointer hover:opacity-70'

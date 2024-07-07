@@ -11,12 +11,12 @@ export default function ProductCard({
   return (
     <div
       style={{ backgroundColor: bgcolor }}
-      className="group/item h-52 shadow-md rounded-xl border flex flex-col justify-start items-start space-y-2 p-0 overflow-hidden"
+      className="w-44 shadow-md rounded-xl border flex flex-col justify-start items-start space-y-2 p-0 overflow-hidden"
     >
-        <img className="w-full h-32" src={getImageUrl(product.image)} alt="apparel type" />
+        <img className="w-full h-36" src={getImageUrl(product.image)} alt="apparel type" />
         <div className="w-full flex justify-between items-center p-2 bg-red-0">
-            <div className="flex flex-col justify-start items-start">
-                <span className="text-md font-medium capitalize text-ellipsis">{product.name}</span>
+            <div className="flex flex-col justify-start items-start font-light">
+                <ProductName text={product.name} />
                 <PriceSpan amount={product.price} />
             </div>
             <Link to={`./add-ons/${product.id}`}  className="text-xl">
@@ -25,6 +25,10 @@ export default function ProductCard({
         </div>
     </div>
   );
+}
+
+export function ProductName({text}) {
+  return <span className="text-md font-medium leading-7 tracking-wide capitalize">{text}</span>
 }
 
 /* References

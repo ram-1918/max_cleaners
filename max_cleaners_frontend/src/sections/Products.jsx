@@ -1,23 +1,42 @@
 import { rightArrowIcon } from "../base/icons";
 import { Outlet, useNavigate } from "react-router";
-import { roundToTwo } from "../assets/utils";
-import { useRecoilValue } from "recoil";
-import { cartAtom, productsAtom } from "../recoil_state/atoms";
+import { roundToTwo, save_to_local } from "../assets/utils";
+import { useRecoilState, useRecoilValue } from "recoil";
+import {
+  activeOrderSessionAtom,
+  cartAtom,
+  errorAtom,
+  orderItemAtom,
+  productsAtom,
+} from "../recoil_state/atoms";
 import Header from "../components/Header";
 import ProductCard from "../components/ProductCard";
 import PriceSpan from "../components/PriceSpan";
 import Button from "../components/Button";
 import BackButton from "../components/BackButton";
 import SingleCartItem from "../components/SingleCartItem";
+import { useEffect } from "react";
 
 export default function Products() {
+  const error = useRecoilValue(errorAtom);
+  const navigate = useNavigate();
+  const [activeOrderSession, setActiveOrderSession] = useRecoilState(activeOrderSessionAtom);
+  useEffect(() => {
+    console.log('products', activeOrderSession);
+    if(!activeOrderSession.activeSession) {
+      navigate('/');
+    }
+    setActiveOrderSession(prev => ({...prev, productsPage: true}));
+    save_to_local('session', {...activeOrderSession, 'products': true});
+  }, []);
   return (
-    <div className="relative w-full h-full px-10 flex justify-between items-center">
+    <div className="relative w-full h-full px-10 flex justify-between items-center space-x-2">
       <div className="w-full h-screen overflow-scroll flex flex-col justify-start items-start space-y-2">
         <BackButton
           text="Modify date & time"
           path="/home/neworder/pick-a-schedule"
         />
+        {error && error}
         <Header text="Select apparels for laundary" />
         <ProductsGrid />
       </div>
@@ -30,7 +49,7 @@ export default function Products() {
 function ProductsGrid() {
   const productsData = useRecoilValue(productsAtom);
   return (
-    <div className="w-[70%] h-fit p-2 grid grid-flow-row grid-cols-5 gap-4">
+    <div className="w-[74%] h-fit py-2 grid grid-flow-row grid-cols-5 gap-3">
       {productsData.map((product) => (
         <ProductCard key={product.id} product={product} />
       ))}
@@ -40,17 +59,12 @@ function ProductsGrid() {
 
 function CartSummary() {
   const cartData = useRecoilValue(cartAtom);
-  console.log(cartData, "cart Data");
   return (
-    <div className="absolute top-0 right-10 w-[30%] h-[85%] border-l px-4 flex flex-col justify-between items-center">
+    <div className="absolute top-0 right-10 w-[25%] h-[85%] border-l px-4 flex flex-col justify-between items-center">
       <div className="w-full h-full ">
         <Header text="Cart Summary" />
         <hr></hr>
-        <div className="py-4 divide-y divide-gray-200 space-y-2">
-          {cartData.products.map((item) => (
-            <SingleCartItem {...item} count={item.count} />
-          ))}
-        </div>
+        <CartItems cart={cartData} />
       </div>
       <SummarySpan
         total_amount={roundToTwo(cartData.total_price)}
@@ -60,8 +74,25 @@ function CartSummary() {
   );
 }
 
+const handle_click = (cartData, setOrderItem, navigate, setError) => {
+  setOrderItem((prev) => ({
+    ...prev,
+    cart: cartData,
+  }));
+  if (cartData.products.length !== 0) {
+    navigate("/home/neworder/overview");
+    setError("");
+  } else {
+    setError("Please add items to cart");
+  }
+};
+
 function SummarySpan({ total_amount, total_count }) {
   const navigate = useNavigate();
+  const cartData = useRecoilValue(cartAtom);
+  const [, setOrderItem] = useRecoilState(orderItemAtom);
+  const [, setError] = useRecoilState(errorAtom);
+
   return (
     <div className="w-full flex flex-col justify-start items-end space-y-1 border-t py-2">
       <div className="w-full flex justify-between items-center space-x-1">
@@ -79,12 +110,27 @@ function SummarySpan({ total_amount, total_count }) {
         </div>
       </div>
       <Button
-        onClick={() => {
-          navigate("/home/neworder/overview");
-        }}
+        onClick={() => handle_click(cartData, setOrderItem, navigate, setError)}
         text="Checkout"
         icon={rightArrowIcon}
       />
+    </div>
+  );
+}
+
+export function CartItems({ textSize = "text-md", cart, save=true, displayLevel="high" }) {
+  // const cartData = useRecoilValue(cartAtom);
+  useEffect(() => {
+    save && save_to_local('cart', cart);
+  }, [cart, save]);
+
+  return (
+    <div
+      className={`w-full py-4 divide-y divide-gray-200 space-y-2 ${textSize}`}
+    >
+      {cart.products.map((item) => (
+        <SingleCartItem key={item.id} {...item} count={item.count} displayLevel={displayLevel} />
+      ))}
     </div>
   );
 }

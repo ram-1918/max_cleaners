@@ -16,6 +16,9 @@ import AddonsPage from '../pages/AddonsPage';
 import OrderOverviewPage from '../pages/OrderOverviewPage';
 import OrderConfirmationPage from '../pages/OrderConfirmationPage';
 import ProfilePage from '../pages/ProfilePage';
+import AddressSection from '../sections/AddressSection';
+import OrdersPage from '../pages/OrderPage';
+import OrderDetailPage from '../pages/OrderDetailPage';
 
 export default function PageRoutes() {
     return (
@@ -24,7 +27,9 @@ export default function PageRoutes() {
                 <Route path='/' element={<Home />} >
                     <Route index element={<Navigate to='/home' />}></Route>
                     <Route path='home/' element={<HomePage />}></Route>
-                    <Route path='profile' element={<ProfilePage />}></Route>
+                    <Route path='profile/' element={<ProfilePage />}>
+                        <Route path='add-address' element={<AddressSection />}></Route>
+                    </Route>
                     <Route path='home/neworder/' element={<NewOrder />}>
                         <Route index element={<Navigate to='./pick-a-schedule' />}></Route>
                         <Route path='pick-a-schedule' element={<SchedulePicker />} />
@@ -33,7 +38,10 @@ export default function PageRoutes() {
                         </Route>
                         <Route path='overview' element={<OrderOverviewPage />} />
                     </Route>
-                    <Route path='order-confirmation' element={<OrderConfirmationPage />} />
+                    <Route path='/home/neworder/order-confirmation' element={<OrderConfirmationPage />} />
+                    <Route path='/home/orders/' element={<OrdersPage />} >
+                        <Route path=':id/detail' element={<OrderDetailPage />} />
+                    </Route>
                 </Route>
 
                 {/* Public routes */}

@@ -14,7 +14,7 @@ export default function ActivityCard({
     >
         <IconSpan icon={icon} />
         <DetailSpan { ...rest } />
-        <AnchorSpan anchor={anchor} path={rest.path} />
+        <AnchorSpan anchor={anchor} {...rest} />
     </div>
   );
 }
@@ -38,10 +38,10 @@ function DetailSpan({ heading, details, count="", text="" }) {
     )
 }
 
-function AnchorSpan({ anchor, path }) {
+function AnchorSpan({ anchor, ...rest }) {
     return (
-        <Link to={path} className="group-hover/item:scale-105 group-hover/item:font-bold cursor-pointer transition ease-in-out duration-150 text-sm w-full text-right font-light capitalize px-2">
+        <button {...rest} className="group-hover/item:scale-105 group-hover/item:font-bold cursor-pointer transition ease-in-out duration-150 text-sm w-full text-right font-light capitalize px-2">
             {anchor} {rightArrowIcon}
-        </Link>
+        </button>
     )
 }

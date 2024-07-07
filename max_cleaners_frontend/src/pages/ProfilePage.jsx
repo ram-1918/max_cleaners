@@ -4,10 +4,11 @@ import Header from "../components/Header";
 import Input from "../components/Input";
 import Button from "../components/Button";
 import { caretDownIcon, caretupIcon, editIcon, plusIcon } from "../base/icons";
-import { useRecoilState } from "recoil";
-import { currentUserAtom } from "../recoil_state/atoms";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { cartAtom, currentUserAtom } from "../recoil_state/atoms";
 import { validateEmail, validateFullname, validatePhone } from "../assets/validations";
 import { OptionsSpan } from "./AddonsPage";
+import { Outlet, useNavigate } from "react-router";
 
 // Data
 const initialUser = {
@@ -57,12 +58,15 @@ const Heading2 = ({text}) => <span className="text-sm font-light">{text}</span>
 
 
 export default function ProfilePage() {
+  const userData = useRecoilValue(currentUserAtom);
+  console.log("After address aupdaete", userData);
   return (
     <div className="h-[70%] flex justify-center items-start">
       <div className="w-[50%] rounded-lg p-2">
         <ProfileHeader />
         <ProfileForm />
       </div>
+      <Outlet />
     </div>
   );
 }
@@ -70,7 +74,7 @@ export default function ProfilePage() {
 function ProfileHeader() {
   return (
     <div className="flex justify-between items-center space-x-10">
-      <BackButton text="Home" path="/" />
+      <BackButton text="back" path="../" />
       <div className="w-[60%]">
         <Header text="User Profile" />
       </div>
@@ -187,23 +191,28 @@ function LocationOptions({showDropdown, setUser}) {
 }
 
 function StarchDiv() {
+  const [userData, setUserData] = useRecoilState(currentUserAtom);
   return (
     <div className="flex flex-col justify-start items-start space-y-1">
       <Heading1 text="starch level" />
       <div className="space-x-2">
-        <OptionsSpan options={['low', 'medium', 'high']} />
+        {/* <OptionsSpan options={['low', 'medium', 'high']} /> */}
+        <div className="flex justify-start items-start gap-2">
+        {['low', 'medium', 'high'].map((item, idx) => <span onClick={() => setUserData(prev => ({...prev, 'starch': item}))}  key={idx} className={`w-20 text-center rounded-full border ${userData.starch === item && 'bg-gray-100'} cursor-pointer hover:bg-gray-100`}>{item}</span>)}
+
+        </div>
       </div>
     </div>
   )
 }
 
 function AddressDiv({ addresses, setUser }) {
-
+  const navigate = useNavigate();
     return (
         <div className="flex flex-col justify-start items-start py-4 space-y-2">
             <AddressHeader />
             <AddressList addresses={addresses} setUser={setUser} />
-            <span className="text-sky-600 cursor-pointer">
+            <span onClick={() => navigate('./add-address')} className="text-sky-600 cursor-pointer">
                 {plusIcon} Add New Address
             </span>
         </div>
@@ -219,9 +228,11 @@ function AddressHeader() {
     )
 }
 
-function AddressList({addresses, setUser}) {
+function AddressList() {
+  const [userData, setUserData] = useRecoilState(currentUserAtom);
+
   const handleMakePrimary = (id) => {
-    setUser(
+    setUserData(
       prev => ({
         ...prev,
         'addresses': prev.addresses.map(ad => ({...ad, 'primary': ad.id===id}))
@@ -229,7 +240,7 @@ function AddressList({addresses, setUser}) {
     )
   }
   return (
-    [...addresses].sort((a,b) => b.primary - a.primary).map((item) => (
+    [...userData.addresses].sort((a,b) => b.primary - a.primary).map((item) => (
       <li key={item.id}>
           {item.address}{" "}
           {item.primary ? (

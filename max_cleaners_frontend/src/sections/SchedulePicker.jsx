@@ -1,76 +1,169 @@
 import CalendarDiv from "./CalendarDiv";
 import BaseCard from "../components/BaseCard";
+import { AddressDiv, LocalHeader } from "../pages/OrderOverviewPage";
+import NoContentDiv from "../components/NoContentDiv";
+import {
+  activeOrderSessionAtom,
+  currentUserAtom,
+  orderItemAtom,
+  selectedScheduleAtom,
+} from "../recoil_state/atoms";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { readableFormattedDate, save_to_local } from "../assets/utils";
+import { useNavigate } from "react-router";
+import { useEffect, useState } from "react";
 
-export const month_mapper = {
-    0: 'january', 1: 'february', 2: 'march', 3: 'april', 4: 'may',
-    5: 'june', 6: 'july', 7: 'august', 8: 'september', 9: 'october',
-    10: 'november', 11: 'december'
+const handle_click = (
+  scheduleItem,
+  userData,
+  setOrderItem,
+  navigate,
+  setError
+) => {
+  const primary_address = userData.addresses.filter(
+    (item) => item.primary === true
+  )?.[0];
+  setOrderItem((prev) => ({
+    ...prev,
+    address: primary_address.address,
+    schedule: scheduleItem,
+  }));
+  if (primary_address && scheduleItem.date && scheduleItem.time_slot) {
+    navigate("/home/neworder/select-items/");
+    setError("");
+  } else {
+    setError("Please select date and time");
   }
-
-const readable_formatted_date = selectedDate => {
-    return `${month_mapper[selectedDate.month]} ${selectedDate.day}, ${selectedDate.year}`;
-  }
-  
+};
 
 export default function SchedulePicker() {
-    return (
-        <BaseCard 
-            title="Schedule a Pick up for Laundary"
-            component1={<LeftComponent />}
-            component2={<RightComponent />}
-            nextPagePath="/home/neworder/select-items"
-            nextPageText="Continue"
-            prevPagePath="/home/"
-            prevPageText="Home"
-        />
-    )
+  const navigate = useNavigate();
+  const [activeOrderSession, setActiveOrderSession] = useRecoilState(activeOrderSessionAtom);
+  const [error, setError] = useState("");
+  const [, setOrderItem] = useRecoilState(orderItemAtom);
+  const scheduleItem = useRecoilValue(selectedScheduleAtom);
+  const userData = useRecoilValue(currentUserAtom);
+
+  useEffect(() => {
+    console.log('schedule picker', activeOrderSession);
+    if(!activeOrderSession.activeSession) {
+      navigate('/');
+    }
+    setActiveOrderSession(prev => ({...prev, schedulePage: true}));
+    save_to_local('session', {...activeOrderSession, 'schedulePage': true});
+  }, []);
+
+  return (
+    <BaseCard
+      title="Schedule a Pick up for Laundary"
+      component1={<LeftComponent />}
+      component2={<RightComponent />}
+      error={error}
+      nextPageText="Continue"
+      prevPagePath="/home/"
+      prevPageText="Home"
+      onClick={() =>
+        handle_click(scheduleItem, userData, setOrderItem, navigate, setError)
+      }
+    />
+  );
 }
 
 function LeftComponent() {
-    return (
-        <div className='flex flex-col justify-center items-start'>
-            <span className='text-lg font-medium title capitalize'>select a date for pick up</span>
-            <CalendarDiv />
-        </div>
-    )
+  return (
+    <div className="w-[60%] flex flex-col justify-center items-center">
+      <CalendarDiv />
+    </div>
+  );
 }
 
 function RightComponent() {
-    const t1 = "2pm - 3pm";
-    return (
-        <div className='flex flex-col justify-center items-start space-y-5'>
-            <span className='text-lg font-light capitalize'>Available Slots for <span className='font-medium'>28th June, 2024</span></span>
-            <span className='bg-sky-100 p-1 rounded'>{t1}</span>
-        </div>
-    )
+  return (
+    <div className="w-[40%] flex flex-col justify-between items-start gap-7 p-2 text-sm overflow-y-scroll">
+      <AddressDiv />
+      <SlotComponent />
+      <ConfirmSchedule />
+    </div>
+  );
 }
 
-
-
-/*
-export default function SchedulePicker() {
-    const t1 = "2pm - 3pm";
-    return (
-        <>
-            <div className='flex flex-col items-start justify-center space-y-4 border rounded-xl shadow-lg p-6 '>
-                <BackButton text="back" path="/home" />
-                <span className='w-full text-center text-2xl p-2'>Schedule a Pick up for Laundary</span>
-                <div className="flex justify-center items-start space-x-10">
-                    <div className='flex flex-col justify-center items-start'>
-                        <span className='text-lg font-medium title capitalize'>select a date for pick up</span>
-                        <CalendarDiv />
-                    </div>
-                    <div className='flex flex-col justify-center items-start space-y-5'>
-                        //  <span className='text-lg font-medium title capitalize'>select a time slot for pick up</span> 
-                        <span className='text-lg font-light capitalize'>Available Slots for <span className='font-medium'>28th June, 2024</span></span>
-                        <span className='bg-sky-100 p-1 rounded'>{t1}</span>
-                    </div>
-                </div>
-                <div className='w-full text-right'>
-                    <Link to='/home/neworder/select-items' className='bg-sky-500 text-white px-2 py-2 text-center rounded-lg hover:opacity-70'>Continue</Link>
-                </div>
-            </div>
-        </>
-    )
+function SlotComponent() {
+  const available_slots = ["10pm-2pm", "3pm-5pm"];
+  return (
+    <div className="flex flex-col justify-center items-start space-y-1">
+      <span className="font-light">
+        Available Slots for <ReadableDate />
+      </span>
+      {available_slots.length !== 0 ? (
+        <SlotsGrid available_slots={available_slots} />
+      ) : (
+        <NoContentDiv text="No available time slots on this day" />
+      )}
+    </div>
+  );
 }
-*/
+
+function SlotsGrid({ available_slots }) {
+  const [selectedSchedule, setSelectedSchedule] =
+    useRecoilState(selectedScheduleAtom);
+
+  const handle_selected_slot = (slot) => {
+    setSelectedSchedule((prev) => ({ ...prev, time_slot: slot }));
+    save_to_local('schedule', {...selectedSchedule, 'time_slot': slot});
+  };
+
+  return (
+    <div className="w-full h-fit flex flex-wrap justify-start items-start gap-2 overflow-y-scroll">
+      {available_slots.map((slot, idx) => (
+        <SlotCard
+          key={idx}
+          onClick={() => handle_selected_slot(slot)}
+          isActive={selectedSchedule.time_slot === slot}
+          slot={slot}
+        />
+      ))}
+    </div>
+  );
+}
+
+export function SlotCard({ slot, hoveroff = false, isActive, ...props }) {
+  return (
+    <span
+      {...props}
+      className={`bg-sky-100 p-1 text-sm rounded uppercase cursor-pointer ${
+        !hoveroff && "hover:bg-sky-200"
+      } ${isActive && "bg-green-200"} `}
+    >
+      {slot}
+    </span>
+  );
+}
+
+const ReadableDate = () => {
+  const selectedSchedule = useRecoilValue(selectedScheduleAtom);
+  return (
+    <span className="font-medium capitalize">
+      {readableFormattedDate(new Date(selectedSchedule.date))}
+    </span>
+  );
+};
+
+function ConfirmSchedule() {
+  const selectedSchedule = useRecoilValue(selectedScheduleAtom);
+  return (
+    <div className="flex flex-col justify-start items-start space-y-1">
+      <LocalHeader text="date & time details:" />
+      <span>
+        Date: <ReadableDate />
+      </span>
+      <span>
+        Time Slot:{" "}
+        {selectedSchedule.time_slot ? (
+          <SlotCard slot={selectedSchedule.time_slot} hoveroff={true} />
+        ) : (
+          "--:--"
+        )}
+      </span>
+    </div>
+  );
+}
