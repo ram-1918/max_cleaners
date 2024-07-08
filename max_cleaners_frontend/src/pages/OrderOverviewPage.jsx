@@ -50,7 +50,7 @@ export default function OrderOverviewPage() {
   useEffect(() => {
     const final_order_details = {
       ...orderItem,
-      id: 1424,
+      id: 1426,
       user: 1,
       created_at: readableFormattedDate(new Date()),
       status: 'pending',

@@ -126,7 +126,7 @@ export function CartItems({ textSize = "text-md", cart, save=true, displayLevel=
 
   return (
     <div
-      className={`w-full py-4 divide-y divide-gray-200 space-y-2 ${textSize}`}
+      className={`w-full py-0 divide-y divide-gray-200 space-y-2 ${textSize}`}
     >
       {cart.products.map((item) => (
         <SingleCartItem key={item.id} {...item} count={item.count} displayLevel={displayLevel} />

@@ -28,7 +28,7 @@ export default function ProductCard({
 }
 
 export function ProductName({text}) {
-  return <span className="text-md font-medium leading-7 tracking-wide capitalize">{text}</span>
+  return <span className="w-28 text-md font-medium leading-7 tracking-wide capitalize">{text}</span>
 }
 
 /* References

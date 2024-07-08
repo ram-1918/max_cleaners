@@ -4,6 +4,7 @@ import { calculate_addons } from "../assets/utils";
 import { ordersListAtom } from "../recoil_state/atoms";
 import { AddressDiv, LeftComponent, RightComponent } from "./OrderOverviewPage";
 import { useRecoilState, useRecoilValue } from "recoil";
+import TrackActiveOrders from "../sections/TrackActiveOrders";
 
 const handle_cancel = (id, setOrdersList, navigate) => {
     setOrdersList(prev => {
@@ -31,15 +32,7 @@ export default function OrderDetailPage() {
             }}
             className="w-full h-full absolute"
             ></div>
-            <BaseCard
-                title="Order Details"
-                component1={<LeftComponent orderItem={orderItem} save={false} displayLevel="medium" />}
-                component2={<RightComponent orderItem={orderItem} />}
-                nextPageText="Cancel"
-                prevPagePath="../"
-                prevPageText="back"
-                onClick={() => handle_cancel(id, setOrdersList, navigate)}
-            />
+            <TrackActiveOrders id={1426} />
         </div>
     )
 }

@@ -11,6 +11,7 @@ const TABLE_HEAD = [
   "pickup schedule",
   "expected delivery",
   "Status",
+  "Action"
 ];
 
 const status_span = (bgcolor, text) => (
@@ -36,14 +37,14 @@ export default function OrdersListDisplay({
   const navigate = useNavigate();
   const cell_style = "p-2 text-md capitalize font-medium px-2";
   const head_style =
-    "text-md text-gray-500 font-light leading-6 tracking-wide max-w-64 border-black px-2 py-2 capitalize";
+    "text-md font-light leading-6 tracking-wide max-w-64 border-black px-2 py-2 capitalize";
   return (
     <table
       style={{ backgroundColor: "" }}
       className="w-full min-w-max table-auto text-left overflow-hidden shadow rounded-lg"
     >
       <thead className="rounded-full">
-        <tr className="bg-gray-100 text-gray-600">
+        <tr className="bg-[#474E68] text-white">
           {TABLE_HEAD.map((item, idx) => (
             <th className={head_style} key={idx}>
               {item}
@@ -78,11 +79,12 @@ export default function OrdersListDisplay({
             <td className={`${cell_style} font-bold capitalize`}>
               {status_mapper[item.status]}
             </td>
-            {/* <td className={`${cell_style} cursor-pointer hover:scale-110 transition duration ease-linear hover:font-medium`}>Manage {rightArrowIcon}</td> */}
+            <td onClick={() => {navigate(`/home/orders/${item.id}/detail`)}} className={`${cell_style} cursor-pointer underline underline-offset-2 hover:scale-110 transition duration ease-linear hover:font-medium`}>Details</td>
           </tr>
         ))}
         {viewall && (
           <tr className="text-right text-gray-600">
+            <td> </td>
             <td> </td>
             <td> </td>
             <td> </td>
