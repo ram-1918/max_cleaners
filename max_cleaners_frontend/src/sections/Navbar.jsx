@@ -25,12 +25,12 @@ export default function Navbar() {
       </div>
       <div className="w-[50%] flex justify-end items-center space-x-10">
         <div className="space-x-5">
-          <LocationSpan locationText={currentUser.location} />
+          <LocationSpan locationText={'currentUser.location'} />
           <ImmediatePickup />
         </div>
         {notificationIcon}
         <WelcomeUsername
-          username={currentUser.fullname}
+          username={'currentUser.fullname'}
           showDropdown={showDropdown}
           setShowDropdown={setShowDropdown}
         />

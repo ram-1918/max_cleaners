@@ -1,17 +1,13 @@
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilValue } from "recoil";
 import { ordersListAtom } from "../recoil_state/atoms"
+import { useEffect, useState } from "react";
+import { Outlet } from "react-router";
+import BackButton from "../components/BackButton";
 import OrdersListDisplay from "../components/OrdersListDisplay";
 import Header from "../components/Header";
-import { useEffect, useState } from "react";
-import BackButton from "../components/BackButton";
-import { Outlet } from "react-router";
 
 export default function OrdersPage() {
     const [orderType, setOrderType] = useState('all orders');
-    const orderslist = useRecoilValue(ordersListAtom);
-    useEffect(() => {
-        console.log('orders list after update', orderslist);
-    }, [orderslist]);
     return (
         <div className="px-[10%] h-screen overflow-y-scroll flex flex-col justify-start items-start gap-4">
             <div className="w-[60%] flex justify-between items-center gap-2">
@@ -30,9 +26,9 @@ export default function OrdersPage() {
 function OrderDetailCard({orderType}) {
     const ordersData = useRecoilValue(ordersListAtom);
     const [filteredOrders, setFilteredOrders] = useState(ordersData);
-    const order_type_mapper = {'all orders': '', 'active': 'placed', 'completed': 'completed'};
-
+    
     useEffect(() => {
+        const order_type_mapper = {'all orders': '', 'active': 'placed', 'completed': 'completed'};
         const filtered_orders = ordersData.filter(item => item.status.includes(order_type_mapper[orderType]));
         setFilteredOrders(filtered_orders);
     }, [ordersData, orderType, setFilteredOrders]);

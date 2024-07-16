@@ -13,15 +13,21 @@ const progress_text = "absolute w-28";
 const active = "bg-blue-500";
 const normal = "bg-gray-200";
 
-export default function BarWithStatus({height=15, status}) {
-    const buffered_height = height + 3;
+export default function BarWithStatus({ height = 15, status }) {
+  const buffered_height = height + 3;
   return (
-    <div style={{height: `${buffered_height}rem`}} className="border-r w-fit px-2">
-        <div style={{ height: `${height}rem`}} className="w-fit flex justify-between items-center space-x-4 p-2">
-            <ProgressBar status={status} />
-            <div className="w-2 h-full"></div>
-            <DisplayStatus />
-        </div>
+    <div
+      style={{ height: `${buffered_height}rem` }}
+      className="border-r w-fit px-2"
+    >
+      <div
+        style={{ height: `${height}rem` }}
+        className="w-fit flex justify-between items-center space-x-4 p-2"
+      >
+        <ProgressBar status={status} />
+        <div className="w-2 h-full"></div>
+        <DisplayStatus />
+      </div>
     </div>
   );
 }
@@ -43,7 +49,9 @@ const DisplayStatusSpan = ({ text, date, pos }) => {
       style={{ top: `${pos}%` }}
       className={`${progress_text} flex flex-col justify-start items-start space-y-1`}
     >
-      <span className="text-md font-medium capitalize leading-6 tracking-wide">{text}</span>
+      <span className="text-md font-medium capitalize leading-6 tracking-wide">
+        {text}
+      </span>
       <span className="text-sm font-light capitalize">{date}</span>
     </div>
   );

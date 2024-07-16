@@ -1,7 +1,6 @@
 import { useNavigate } from "react-router";
 import { readableFormattedDate } from "../assets/utils";
 import { rightArrowIcon } from "../base/icons";
-import Header from "../components/Header";
 
 const TABLE_HEAD = [
   "order id",

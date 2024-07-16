@@ -3,7 +3,6 @@ import BaseCard from "../components/BaseCard";
 import { AddressDiv, LocalHeader } from "../pages/OrderOverviewPage";
 import NoContentDiv from "../components/NoContentDiv";
 import {
-  activeOrderSessionAtom,
   currentUserAtom,
   orderItemAtom,
   selectedScheduleAtom,
@@ -11,7 +10,8 @@ import {
 import { useRecoilState, useRecoilValue } from "recoil";
 import { readableFormattedDate, save_to_local } from "../assets/utils";
 import { useNavigate } from "react-router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import useHandleSession from "../hooks/useHandleSession";
 
 const handle_click = (
   scheduleItem,
@@ -38,20 +38,11 @@ const handle_click = (
 
 export default function SchedulePicker() {
   const navigate = useNavigate();
-  const [activeOrderSession, setActiveOrderSession] = useRecoilState(activeOrderSessionAtom);
   const [error, setError] = useState("");
   const [, setOrderItem] = useRecoilState(orderItemAtom);
   const scheduleItem = useRecoilValue(selectedScheduleAtom);
   const userData = useRecoilValue(currentUserAtom);
-
-  useEffect(() => {
-    console.log('schedule picker', activeOrderSession);
-    if(!activeOrderSession.activeSession) {
-      navigate('/');
-    }
-    setActiveOrderSession(prev => ({...prev, schedulePage: true}));
-    save_to_local('session', {...activeOrderSession, 'schedulePage': true});
-  }, []);
+  useHandleSession('schedulePage', 'schedulePage');
 
   return (
     <BaseCard

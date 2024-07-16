@@ -1,14 +1,13 @@
 import { useEffect, useState } from "react";
+import { caretDownIcon, caretupIcon, editIcon, plusIcon } from "../base/icons";
+import { useRecoilState } from "recoil";
+import { currentUserAtom } from "../recoil_state/atoms";
+import { validateEmail, validateFullname, validatePhone } from "../assets/validations";
+import { Outlet, useNavigate } from "react-router";
 import BackButton from "../components/BackButton";
 import Header from "../components/Header";
 import Input from "../components/Input";
 import Button from "../components/Button";
-import { caretDownIcon, caretupIcon, editIcon, plusIcon } from "../base/icons";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { cartAtom, currentUserAtom } from "../recoil_state/atoms";
-import { validateEmail, validateFullname, validatePhone } from "../assets/validations";
-import { OptionsSpan } from "./AddonsPage";
-import { Outlet, useNavigate } from "react-router";
 
 // Data
 const initialUser = {
@@ -41,13 +40,11 @@ const errInitial = {
 const availableLocations = [
   {
     id: 1,
-    city: "edison",
-    state: "NJ"
+    name: "edison, NJ"
   },
   {
     id: 2,
-    city: "columbus",
-    state: "OH"
+    name: "columbus, OH"
   },
 ];
 
@@ -58,8 +55,6 @@ const Heading2 = ({text}) => <span className="text-sm font-light">{text}</span>
 
 
 export default function ProfilePage() {
-  const userData = useRecoilValue(currentUserAtom);
-  console.log("After address aupdaete", userData);
   return (
     <div className="h-[70%] flex justify-center items-start">
       <div className="w-[50%] rounded-lg p-2">
@@ -90,15 +85,20 @@ function ProfileForm() {
   const [error, setError] = useState(errInitial);
 
   useEffect(() => {
-    if(currentUser.isLoaded) setUser(currentUser);
-  }, [currentUser.isLoaded]);
+    if(currentUser && currentUser.basic_info){
+      setUser(currentUser);
+      console.log('User', currentUser.basic_info.fullname);
+    }
+  }, [currentUser]);
 
+  if(!user.basic_info){
+    return <div>Loading...</div>
+  }
 
-  const handleUpdate = e => {
+  const handle_update = e => {
     // Makes an API call and updates the Current User state
     e.preventDefault();
     setCurrentUser(user);
-    console.log(user);
   }
 
   return (
@@ -106,29 +106,29 @@ function ProfileForm() {
       <div className="grid grid-cols-2 grid-flow-row gap-4">
         <Input
           onChange={e =>
-            setUser(prev => ({ ...prev, 'fullname': validateFullname(e.target.value, setError) }))
+            setUser(prev => ({ ...prev, ['basic_info']: {...prev.basic_info, 'fullname': validateFullname(e.target.value, setError)}}))
           }
           placeholder=""
-          value={user.fullname}
+          value={user.basic_info.fullname}
           label="fullname"
           type="text"
           error={error}
         />
         <Input
           onChange={e =>
-            setUser(prev => ({ ...prev, 'email': validateEmail(e.target.value, setError)}))
+            setUser(prev => ({ ...prev, ['basic_info']: {...prev.basic_info, 'email': validateEmail(e.target.value, setError)}}))
           }
           placeholder=""
-          value={user.email}
+          value={user.basic_info.email}
           label="email"
           type="text"
           error={error}
         />
         <Input
           onChange={e =>
-            setUser(prev => ({ ...prev, 'phone': validatePhone(e.target.value, setError) }))
+            setUser(prev => ({ ...prev, ['basic_info']: {...prev.basic_info,'phone': validatePhone(e.target.value, setError)}}))
           }
-          value={user.phone}
+          value={user.basic_info.phone}
           label="phone"
           type="tel"
           pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
@@ -138,32 +138,35 @@ function ProfileForm() {
         <Input
           onChange={e => console.log(e.target.value)}
           placeholder=""
-          value={user.password}
+          value={user.basic_info.password}
           label="password"
           disable={true}
           type="password"
           error={error}
         />
-        {user.location && <LocationDiv user={user} setUser={setUser} />}
-        <StarchDiv />
+        <LocationDiv user={user} setUser={setUser} />
+        <StarchDiv user={user} setUser={setUser} />
       </div>
       <div className="w-full text-right mt-5">
-        <Button onClick={e => handleUpdate(e)} text="update" />
+        <Button onClick={e => handle_update(e)} text="update" />
       </div>
-      <AddressDiv addresses={user.addresses} setUser={setUser} />
+      <AddressDiv setUser={setUser} />
     </form>
   );
 }
 
 function LocationDiv({user, setUser}) {
   const [showDropdown, setShowDropdown] = useState(false);
-
+  if(!user.basic_info) {
+    return <div>Loading your location...</div>
+  }
   return (
     <div className="flex flex-col justify-start items-start space-y-0">
       <Heading1 text="location" />
       <Heading2 text="Choose a location from the below" />
       <div className="flex flex-col justify-start items-start py-1">
-        <span onClick={() => {setShowDropdown(!showDropdown)}} className={`border px-2 py-1 z-10 bg-gray-100 ${showDropdown ? 'rounded-tl-lg rounded-tr-lg': 'rounded-lg'} cursor-pointer capitalize`}>{user['location']['city']}, {user['location']['state']} {showDropdown ? caretupIcon : caretDownIcon}</span>
+        <span onClick={() => {setShowDropdown(!showDropdown)}} className={`border px-2 py-1 z-10 bg-gray-100 ${showDropdown ? 'rounded-tl-lg rounded-tr-lg': 'rounded-lg'} cursor-pointer capitalize`}>{user.basic_info.location || "Choose location" } {showDropdown ? caretupIcon : caretDownIcon}</span>
+        {/* <span onClick={() => {setShowDropdown(!showDropdown)}} className={`border px-2 py-1 z-10 bg-gray-100 ${showDropdown ? 'rounded-tl-lg rounded-tr-lg': 'rounded-lg'} cursor-pointer capitalize`}>{user['location']['city']}, {user['location']['state']} {showDropdown ? caretupIcon : caretDownIcon}</span> */}
         {showDropdown && <div onClick={() => {setShowDropdown(false)}} className="absolute w-full h-full top-0 left-0 z-0"></div>}
         <div className="relative w-full p-2">
           <LocationOptions showDropdown={showDropdown} setUser={setUser} />
@@ -174,31 +177,31 @@ function LocationDiv({user, setUser}) {
 }
 
 function LocationOptions({showDropdown, setUser}) {
-  const handleLocationSelect = item => {
+  const handle_select_location = item => {
     setUser(prev => ({
       ...prev,
-      'location': {
-        'city': item.city,
-        'state': item.state
+      ['basic_info']: {
+        ...prev.basic_info,
+        'location': item.name
       }
     }))
   }
   return (
     <ul className={`${showDropdown ? 'flex' : 'hidden'} w-40 border absolute top-0 left-0 z-10 rounded shadow-lg list-style-none flex flex-col justify-center items-start divide-y divide-gray-300`}>
-      {availableLocations.map(item => <li key={item.id} onClick={() => handleLocationSelect(item)} className="w-full p-1 capitalize px-2 cursor-pointer hover:bg-gray-100">{item.city}, {" "}{item.state}</li>)}
+      {availableLocations.map(item => <li key={item.id} onClick={() => handle_select_location(item)} className="w-full p-1 capitalize px-2 cursor-pointer hover:bg-gray-100">{item.name}</li>)}
     </ul>
   )
 }
 
-function StarchDiv() {
-  const [userData, setUserData] = useRecoilState(currentUserAtom);
+function StarchDiv({ user, setUser }) {
+  // const [userData, setUserData] = useRecoilState(currentUserAtom);
   return (
     <div className="flex flex-col justify-start items-start space-y-1">
       <Heading1 text="starch level" />
       <div className="space-x-2">
         {/* <OptionsSpan options={['low', 'medium', 'high']} /> */}
         <div className="flex justify-start items-start gap-2">
-        {['low', 'medium', 'high'].map((item, idx) => <span onClick={() => setUserData(prev => ({...prev, 'starch': item}))}  key={idx} className={`w-20 text-center rounded-full border ${userData.starch === item && 'bg-gray-100'} cursor-pointer hover:bg-gray-100`}>{item}</span>)}
+        {['low', 'medium', 'high'].map((item, idx) => <span onClick={() => setUser(prev => ({...prev, ['basic_info']: {...prev.basic_info, 'starch': item}}))}  key={idx} className={`w-20 text-center rounded-full border ${user.basic_info.starch === item && 'bg-gray-100'} cursor-pointer hover:bg-gray-100`}>{item}</span>)}
 
         </div>
       </div>
@@ -206,12 +209,12 @@ function StarchDiv() {
   )
 }
 
-function AddressDiv({ addresses, setUser }) {
+function AddressDiv({ setUser }) {
   const navigate = useNavigate();
     return (
         <div className="flex flex-col justify-start items-start py-4 space-y-2">
             <AddressHeader />
-            <AddressList addresses={addresses} setUser={setUser} />
+            <AddressList setUser={setUser} />
             <span onClick={() => navigate('./add-address')} className="text-sky-600 cursor-pointer">
                 {plusIcon} Add New Address
             </span>
@@ -230,6 +233,10 @@ function AddressHeader() {
 
 function AddressList() {
   const [userData, setUserData] = useRecoilState(currentUserAtom);
+
+  if(!userData){
+    return <div>Loading your addresses...</div>
+  }
 
   const handleMakePrimary = (id) => {
     setUserData(

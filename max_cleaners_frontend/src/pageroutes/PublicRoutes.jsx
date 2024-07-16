@@ -1,9 +1,8 @@
-import { useSelector } from "react-redux";
 import { Navigate, Outlet } from "react-router-dom";
-import { getIsLoggedIn } from "../state/slice";
+import { isLoggedInAtom } from "../recoil_state/atoms";
+import { useRecoilValue } from "recoil";
 
 export default function PublicRoutes() {
-    const isLoggedIn = useSelector(getIsLoggedIn);
-    console.log('Public', isLoggedIn);
-    return !isLoggedIn ? <Outlet /> : <Navigate to='/home' />
+    const is_loggedin = useRecoilValue(isLoggedInAtom);
+    return !is_loggedin ? <Outlet /> : <Navigate to='/home' />
 }

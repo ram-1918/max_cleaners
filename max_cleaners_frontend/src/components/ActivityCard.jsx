@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import { rightArrowIcon } from "../base/icons";
 
 export default function ActivityCard({

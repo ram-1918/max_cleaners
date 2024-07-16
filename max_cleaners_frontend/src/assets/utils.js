@@ -1,3 +1,5 @@
+import axios from "axios";
+
 export const month_mapper = {
   0: "january",
   1: "february",
@@ -12,6 +14,21 @@ export const month_mapper = {
   10: "november",
   11: "december",
 };
+
+export const API_URL = "http://127.0.0.1:8000/api";
+
+export const axiosInstance = axios.create({
+  baseURL: API_URL,
+  withCredentials: true
+});
+
+export const custom_timeout = setLoading => setTimeout(() => {
+  setLoading(false);
+}, 5000);
+
+export const get_primary_address = userData => userData.addresses.filter(
+  (item) => item.primary === true
+)?.[0];
 
 export const date_support_mapper = (date) => {
   const mapper = { 0: "th", 1: "st", 2: "nd", 3: "rd" };
@@ -30,7 +47,8 @@ export const validateData = (data) => {
   if (email !== "") {
     // customized conditions
     isEmailValid = true;
-  } else if (fullname && fullname.length >= 7) {
+  } 
+  if (fullname && fullname.length >= 7) {
     isFullnameValid = true;
   }
   return isEmailValid && isFullnameValid;
@@ -69,7 +87,7 @@ export const save_to_local = (key, value) => {
 
 export const retrieve_from_local = (key) => {
   const result = localStorage.getItem(key);
-  return result ? JSON.parse(result) : null;
+  return (result && result !== undefined) ? JSON.parse(result) : null;
 };
 
 export const remove_from_local = (key) => {
@@ -80,7 +98,6 @@ export const calculate_addons = (product) => {
   let total_addons = 0;
   ["cloth_type", "alteration", "wash_type"].forEach((key) => {
     if (product[key] !== "none" && product[key] !== "regular") {
-      console.log(product, product[key], key);
       total_addons += 1;
     }
   });

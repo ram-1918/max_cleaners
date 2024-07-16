@@ -9,6 +9,9 @@ import {
   signoutIcon,
   userIcon,
 } from "../base/icons";
+import { API_URL, axiosInstance } from "../assets/utils";
+import { useRecoilState } from "recoil";
+import { isLoggedInAtom } from "../recoil_state/atoms";
 
 export default function WelcomeUsername({
   username,
@@ -42,9 +45,23 @@ function Username({ username, showDropdown }) {
   );
 }
 
+const url = `${API_URL}/user/logout`;
+const list_style = "text-md px-2 py-2 cursor-pointer hover:bg-gray-200";
+
 function DropdownOptions() {
   const navigate = useNavigate();
-  const list_style = "text-md px-2 py-2 cursor-pointer hover:bg-gray-200";
+  const [, setIsLoggedIn] = useRecoilState(isLoggedInAtom);
+
+  const handle_logout = () => {
+    // API CALL
+    axiosInstance.get(url)
+    .then(() => console.log('Logged out'))
+    .catch(err => console.log("Logout error: ", err))
+    setIsLoggedIn(false);
+    localStorage.removeItem('lg');
+    localStorage.removeItem('userid');
+  };
+
   return (
     <ul className="z-10 w-full absolute top-1 left-0 bg-white shadow-lg rounded-bl-lg rounded-br-lg overflow-hidden">
       {options.map((item) => (
@@ -52,7 +69,7 @@ function DropdownOptions() {
           <span className="pr-2">{item.icon}</span> {item.text}
         </li>
       ))}
-      <li className={`${list_style} border-t text-red-600`}>
+      <li onClick={() => handle_logout()} className={`${list_style} border-t text-red-600`}>
         <span className="pr-2">{signoutIcon}</span> Sign Out
       </li>
     </ul>

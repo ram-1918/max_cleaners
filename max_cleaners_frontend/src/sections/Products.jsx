@@ -3,7 +3,6 @@ import { Outlet, useNavigate } from "react-router";
 import { roundToTwo, save_to_local } from "../assets/utils";
 import { useRecoilState, useRecoilValue } from "recoil";
 import {
-  activeOrderSessionAtom,
   cartAtom,
   errorAtom,
   orderItemAtom,
@@ -15,20 +14,12 @@ import PriceSpan from "../components/PriceSpan";
 import Button from "../components/Button";
 import BackButton from "../components/BackButton";
 import SingleCartItem from "../components/SingleCartItem";
+import useHandleSession from "../hooks/useHandleSession";
 import { useEffect } from "react";
 
 export default function Products() {
   const error = useRecoilValue(errorAtom);
-  const navigate = useNavigate();
-  const [activeOrderSession, setActiveOrderSession] = useRecoilState(activeOrderSessionAtom);
-  useEffect(() => {
-    console.log('products', activeOrderSession);
-    if(!activeOrderSession.activeSession) {
-      navigate('/');
-    }
-    setActiveOrderSession(prev => ({...prev, productsPage: true}));
-    save_to_local('session', {...activeOrderSession, 'products': true});
-  }, []);
+  useHandleSession('productsPage', 'products');
   return (
     <div className="relative w-full h-full px-10 flex justify-between items-center space-x-2">
       <div className="w-full h-screen overflow-scroll flex flex-col justify-start items-start space-y-2">

@@ -3,16 +3,14 @@ import productsData from '../assets/data/products.json';
 import { cart_initial_data, initial_order_data, initial_order_session_info, schedule_initial_data, user_initial_data } from './initial_data';
 import { retrieve_from_local } from '../assets/utils';
 
-export const canProceed = atom({
-    key: "canProceed",
-    default: {
-        proceed: false
-    }
+export const isLoggedInAtom = atom({
+    key: "isLoggedInAtom",
+    default: retrieve_from_local('lg') ? retrieve_from_local('lg') : false
 });
 
-export const errorAtom = atom({
-    key: 'errorAtom',
-    default: ""
+export const currentUserIdAtom = atom({
+    key: "currentUserIdAtom",
+    default: retrieve_from_local('userid') ? retrieve_from_local('userid'): ""
 });
 
 export const currentUserAtom = atom({
@@ -53,4 +51,8 @@ export const ordersListAtom = atom({
 export const activeOrderSessionAtom = atom({
     key: 'activeOrderSessionAtom',
     default: retrieve_from_local('session') ? retrieve_from_local('session') : initial_order_session_info
+});
+export const errorAtom = atom({
+    key: 'errorAtom',
+    default: ""
 });

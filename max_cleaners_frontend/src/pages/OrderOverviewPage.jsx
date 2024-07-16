@@ -1,12 +1,13 @@
-import { useRecoilSnapshot, useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { locationIcon } from "../base/icons";
-import BaseCard from "../components/BaseCard";
 import { activeOrderSessionAtom, cartAtom, currentUserAtom, errorAtom, orderItemAtom, ordersListAtom, selectedScheduleAtom } from "../recoil_state/atoms";
 import { CartItems } from "../sections/Products";
 import { SlotCard } from "../sections/SchedulePicker";
 import { useEffect } from "react";
 import { useNavigate } from "react-router";
-import { readableFormattedDate, roundoff, save_to_local } from "../assets/utils";
+import { get_primary_address, readableFormattedDate, roundoff, save_to_local } from "../assets/utils";
+import { add_new_item } from "../recoil_state/crud";
+import BaseCard from "../components/BaseCard";
 
 const handle_click = (navigate, setOrderItem, ordersList, orderItem, setOrdersList) => {
   const cart_value = orderItem.cart.total_price;
@@ -18,9 +19,14 @@ const handle_click = (navigate, setOrderItem, ordersList, orderItem, setOrdersLi
       ...prev,
       status: 'placed'
     })
-  )
-  setOrdersList(prev => [...prev, ({...orderItem, status: 'placed', total_order_value: grand_total})]);
-  save_to_local('orders', [...ordersList, ({...orderItem, status: 'placed', total_order_value: grand_total})]);
+  );
+  const updated_order_item = {
+    ...orderItem, 
+    status: 'placed', 
+    total_order_value: grand_total
+  };
+  add_new_item(setOrdersList, updated_order_item);
+  save_to_local('orders', [...ordersList, updated_order_item]);
   navigate('/home/neworder/order-confirmation')
 }
 
@@ -33,18 +39,15 @@ export default function OrderOverviewPage() {
   const cartItem = useRecoilValue(cartAtom);
   const [ordersList, setOrdersList] = useRecoilState(ordersListAtom);
   const [activeOrderSession, setActiveOrderSession] = useRecoilState(activeOrderSessionAtom);
-  const primary_address = userData.addresses.filter(
-    (item) => item.primary === true
-  )?.[0];
+  const primary_address = get_primary_address(userData);
 
   useEffect(() => {
-    console.log('products', activeOrderSession);
     if(!activeOrderSession.activeSession) {
       navigate('/');
     }
     setActiveOrderSession(prev => ({...prev, orderSummaryPage: true}))
     save_to_local('session', {...activeOrderSession, 'orderSummaryPage': true});
-  }, []);
+  }, [navigate, activeOrderSession, setActiveOrderSession]);
 
 
   useEffect(() => {
@@ -60,7 +63,7 @@ export default function OrderOverviewPage() {
     }
     setOrderItem(final_order_details);
     save_to_local('checkout', final_order_details);
-  }, []);
+  }, [orderItem, cartItem, scheduleItem, setOrderItem, primary_address.address]);
 
   return (
     <BaseCard
@@ -76,7 +79,7 @@ export default function OrderOverviewPage() {
   );
 }
 
-export function LeftComponent({orderItem, save=true, displayLevel={displayLevel}}) {
+export function LeftComponent({orderItem, save=true, displayLevel="high"}) {
   return (
     <div className="w-[55%] h-80 py-1 px-4 flex flex-col justify-start items-start shadow overflow-y-scroll">
       <span className="py-2 text-lg font-medium text-sky-500">
@@ -114,13 +117,11 @@ export function DateTimeDiv({date, timeSlot}) {
 
 export function AddressDiv({displayAddress=""}) {
   const user_data = useRecoilValue(currentUserAtom);
-  const [scheduleData, setScheduleData] = useRecoilState(selectedScheduleAtom);
-  const primary_address = user_data.addresses.filter(
-    (item) => item.primary === true
-  )?.[0];
-
+  const [, setScheduleData] = useRecoilState(selectedScheduleAtom);
+  const primary_address = get_primary_address(user_data);
   useEffect(() => {
-    setScheduleData({...scheduleData, 'address': (primary_address && primary_address.address) || ""});
+    const address = (primary_address && primary_address.address) || "";
+    setScheduleData(prev => ({...prev, 'address': address}));
   }, [primary_address, setScheduleData]);
 
 

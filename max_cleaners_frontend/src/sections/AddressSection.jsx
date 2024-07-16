@@ -1,22 +1,17 @@
 import { useState } from "react";
-import Input from "../components/Input";
-import Header from "../components/Header";
-import Button from "../components/Button";
 import { useRecoilState } from "recoil";
 import { currentUserAtom } from "../recoil_state/atoms";
 import { useNavigate } from "react-router";
+import Input from "../components/Input";
+import Header from "../components/Header";
+import Button from "../components/Button";
+import { initial_address } from "../recoil_state/initial_data";
 
 export default function AddressSection() {
   const navigate = useNavigate();
-  const [error, setError] = useState("");
+  const [error, ] = useState("");
   const [, setCurrentUser] = useRecoilState(currentUserAtom);
-  const [newaddress, setNewAddress] = useState({
-    address1: "",
-    address2: "",
-    city: "",
-    state: "",
-    zip: "",
-  });
+  const [newaddress, setNewAddress] = useState(initial_address);
   return (
     <div className="w-full h-full fixed -top-1 z-10 left-0 right-0 flex items-center justify-center p-4 bg-[rgba(0,0,0,0.3)]">
       <div className="w-[40%] p-4 flex flex-col justify-start items-start gap-4 rounded-lg bg-white">
@@ -71,7 +66,6 @@ export default function AddressSection() {
         <div className="w-full text-right">
           <Button
             onClick={() => {
-              console.log(format_address(newaddress));
               setCurrentUser((prev) => ({
                 ...prev,
                 addresses: [

@@ -1,9 +1,8 @@
 import { Navigate, Outlet } from "react-router-dom";
-import { getIsLoggedIn } from "../state/slice";
-import {useSelector} from 'react-redux';
+import { useRecoilValue } from "recoil";
+import { isLoggedInAtom } from "../recoil_state/atoms";
 
 export default function PrivateRoutes() {
-    const isLoggedIn = useSelector(getIsLoggedIn);
-    console.log('Private', isLoggedIn);
-    return isLoggedIn ? <Outlet /> : <Navigate to='/auth/login' />
+    const is_loggedin = useRecoilValue(isLoggedInAtom);
+    return is_loggedin ? <Outlet /> : <Navigate to='/auth/login' />
 }

@@ -9,6 +9,23 @@ export const user_initial_data = {
   isLoaded: false
 };
 
+export const initial_address = {
+  address1: "",
+  address2: "",
+  city: "",
+  state: "",
+  zip: "",
+}
+
+export const today = new Date();
+
+export const initial_date_value = {
+  selectedDate: today,
+  year: today.getFullYear(),
+  month: today.getMonth(),
+  day: today.getDate()
+};
+
 export const schedule_initial_data = {
     date: new Date(),
     time_slot: "",

@@ -3,42 +3,25 @@ import Navbar from "./sections/Navbar";
 import { Outlet } from 'react-router-dom';
 import Footer from "./sections/Footer";
 import { useEffect } from "react";
-import { useRecoilState } from "recoil";
-import { currentUserAtom } from "./recoil_state/atoms";
-import { save_to_local } from "./assets/utils";
-
-const user_info = {
-    fullname: "Ram Chandra",
-    email: "crc.5453@gmail.com",
-    phone: "716-617-1918",
-    password: "asf4y6flr49",
-    location: {
-        city: "Edison",
-        state: "NJ"
-    },
-    isLoaded: true,
-    addresses: [
-        {
-            id: 1,
-            primary: true,
-            address: "2649 Wildberry ct, Edison, NJ, 08817"
-        },
-        {
-            id: 2,
-            primary: false,
-            address: "1 Ethel Rd, Edison, NJ, 08820"
-        },
-    ]
-}
+import { useRecoilState, useRecoilValue } from "recoil";
+import { currentUserAtom, currentUserIdAtom } from "./recoil_state/atoms";
+import { API_URL, save_to_local, retrieve_from_local } from "./assets/utils";
+import { useFetchData } from "./hooks/useFetchData";
 
 export default function Home() {
     const [, setCurrentUser] = useRecoilState(currentUserAtom);
+    const current_user_id = useRecoilValue(currentUserIdAtom);
+    const { data:response_from_user_api, loading, fetch_data } = useFetchData();
     useEffect(() => {
-        console.log("API call to retrieve User Info");
-        // Set user details with the data from API
-        setCurrentUser(user_info);
-        save_to_local('user', user_info);
-    }, [setCurrentUser])
+        const url = `${API_URL}/user/${current_user_id}`;
+        fetch_data(url);
+        setCurrentUser(response_from_user_api);
+    }, [setCurrentUser, current_user_id, loading]);
+
+    if(loading) {
+        return <div>Loading...</div>
+    }
+
     return (
         <div className="h-screen space-y-10">
             <Navbar />

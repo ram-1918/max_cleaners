@@ -1,19 +1,17 @@
 import { useRecoilState } from "recoil";
-import { textcolor_2 } from "../assets/data";
-import { allOrdersIcon, newOrderIcon, newUserIcon, userIcon } from "../base/icons";
-import ActivityCard from "../components/ActivityCard";
-import Header from "../components/Header";
+import { allOrdersIcon, newOrderIcon, newUserIcon } from "../base/icons";
 import { activeOrderSessionAtom } from "../recoil_state/atoms";
 import { useNavigate } from "react-router";
 import { save_to_local } from "../assets/utils";
+import ActivityCard from "../components/ActivityCard";
+import Header from "../components/Header";
 
 const handle_start_order_click = (setActiveOrderSession, activeOrderSession, navigate) => {
-  console.log('stated order');
   setActiveOrderSession(prev => ({
     ...prev,
     activeSession: true
-  }))
-  navigate('/home/neworder/pick-a-schedule')
+  }));
+  navigate('/home/neworder/pick-a-schedule');
   save_to_local('session', {...activeOrderSession, 'activeSession': true});
 }
 
